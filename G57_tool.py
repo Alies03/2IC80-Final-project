@@ -5,7 +5,7 @@ ipM1 = "192.168.56.101" #  Rename to IPAttacker?
 ipM2 = "192.168.56.102"
 ipM3 = "192.168.56.103" # IPVictim?
 ipMal = "50.63.7.226"   # Malware IP
-trapUrl = "www.google.com."
+trapUrl = "www.google.com"
 ipTrap = "142.251.32.100"
 ip6Mal = ""
 verbose = False
@@ -47,7 +47,7 @@ def dns_spoof_attack():
     if verbose:
         print "Starting DNS spoof attack"
 
-    packets = sniff(filter='udp port 53', count=8, prn=process_packet)
+    packets = sniff(filter='udp port 53', count=16, prn=process_packet)
     # for packet in packets:
     #     if packet.haslayer(DNS):
     #         dns_packet = packet[DNS]
