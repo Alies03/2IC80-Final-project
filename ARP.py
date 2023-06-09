@@ -38,6 +38,7 @@ def dns_spoof_attack():
             # print("DNS Response: ", dns_packet.an.rdata)
             
     dns_p1 = IP(src=ipMal, dst=ipM3) / UDP(dport=53) / DNS(rd=1, qd=DNSQR(qname=trapUrl))
+    dns_p1.show()
 
 # SSL strip one packet
 def ssl_strip(packet):
