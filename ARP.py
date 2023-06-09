@@ -6,6 +6,7 @@ ipM2 = "192.168.56.102"
 ipM3 = "192.168.56.103" # IPVictim?
 ipMal = "50.63.7.226"   # Malware IP
 trapUrl = 'google.com'
+ipTrap = "142.251.32.100"
 
 def ARP_spoofing():
     macM1 = "08:00:27:b7:c4:af"
@@ -50,7 +51,7 @@ def process_packet(packet):
         destination_port = udp_packet.dport
 
         dns_packet.show()
-        if destination_ip == "8.8.8.8":
+        if destination_ip == ipTrap:
             print("DNS packet with destination IP " + trapUrl + " found!")
             print("Source IP: ", ip_packet.src)
             print("Source Port: ", udp_packet.sport)
