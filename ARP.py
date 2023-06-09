@@ -40,22 +40,23 @@ def dns_spoof_attack():
     # dns_p1 = IP(src=ipMal, dst=ipM3) / UDP(dport=53) / DNS(rd=1, qd=DNSQR(qname=trapUrl))
     # dns_p1.show()
 
-def process_packet:
-if IP in packet and UDP in packet and DNS in packet:
-    ip_packet = packet[IP]
-    udp_packet = packet[UDP]
-    dns_packet = packet[DNS]
+def process_packet(packet):
+    if IP in packet and UDP in packet and DNS in packet:
+        ip_packet = packet[IP]
+        udp_packet = packet[UDP]
+        dns_packet = packet[DNS]
 
-    destination_ip = ip_packet.dst
-    destination_port = udp_packet.dport
+        destination_ip = ip_packet.dst
+        destination_port = udp_packet.dport
 
-    if destination_ip == "8.8.8.8":
-        print("DNS packet with destination IP " + trapUrl + " found!")
-        print("Source IP: ", ip_packet.src)
-        print("Source Port: ", udp_packet.sport)
-
-        # Display complete DNS packet information
         dns_packet.show()
+        if destination_ip == "8.8.8.8":
+            print("DNS packet with destination IP " + trapUrl + " found!")
+            print("Source IP: ", ip_packet.src)
+            print("Source Port: ", udp_packet.sport)
+
+            # Display complete DNS packet information
+            
 
 
 # SSL strip one packet
