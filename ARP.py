@@ -49,7 +49,7 @@ if IP in packet and UDP in packet and DNS in packet:
     destination_ip = ip_packet.dst
     destination_port = udp_packet.dport
 
-    if destination_ip == trapUrl:
+    if destination_ip == "8.8.8.8":
         print("DNS packet with destination IP " + trapUrl + " found!")
         print("Source IP: ", ip_packet.src)
         print("Source Port: ", udp_packet.sport)
