@@ -58,9 +58,11 @@ def dns_spoof_attack():
     # dns_p1.show()
 
 def process_packet(packet):
+    if verbose:
+        print("Looking for DNS Response Packets")
     if IP in packet and UDP in packet and DNS in packet:
         if verbose:
-            print "Found DNS packet"
+            print ("Found DNS packet")
         ip_packet = packet[IP]
         udp_packet = packet[UDP]
         dns_packet = packet[DNS]
@@ -127,17 +129,32 @@ def ssl_strip_attack():
 
 # =============== Text Interface ===============
 
-def attack():
+def attack(type):
+    done = False
     try:
-        while True:
-            ARP_spoofing()
-            dns_spoof_attack()
-            ssl_strip_attack()
+        while(not done):
+            type = str(input(   "Plase select the desired attack\n" +
+                    "type \"1\" for ARP Poisoning \n" +
+                    "type \"2\" for DNS Spoofing \n" +
+                    "type \"3\" for SSL Stripping \n" +
+                    "type \"4\" to exit \n"))
+            if type == "1":
+                ARP_spoofing()
+            elif type == "2":
+                dns_spoof_attack()
+            elif type == "3":
+                ssl_strip_attack()
+            elif type == "4":
+                print ("Ending...")
+                done = True
+                break
+            else:
+                print("Iput error!")
             time.sleep(20)
-            print "Starting attack again"
+            print ("Starting attack again")
 
     except KeyboardInterrupt:
-        print "KeyboardInterrupt, stopping the whole attack"
+        print ("KeyboardInterrupt, stopping the whole attack")
         pass
 
 if __name__ == "__main__":
@@ -152,6 +169,5 @@ if __name__ == "__main__":
         verbose = True
     else:
         print("Input error!")
-
-    attack()
+    attack(type)
         
