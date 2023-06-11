@@ -133,7 +133,7 @@ def attack(type):
     done = False
     try:
         while(not done):
-            type = str(input(   "Please select the desired attack\n" +
+            type = str(input(   "\nPlease select the desired attack\n" +
                     "type \"1\" for ARP Poisoning \n" +
                     "type \"2\" for DNS Spoofing \n" +
                     "type \"3\" for SSL Stripping \n" +
