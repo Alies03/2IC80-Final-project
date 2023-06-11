@@ -92,8 +92,8 @@ def process_packet(packet):
                 del packet[IP].len
                 del packet[UDP].chksum
                 del packet[UDP].len
-		
-		if (not type=="3"):
+		        
+                if (not type=="3"):
                     sendp(packet, iface = "enp0s3", verbose=True)
 
             # Display complete DNS packet information
