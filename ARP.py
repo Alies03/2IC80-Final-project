@@ -124,7 +124,7 @@ def ssl_strip_attack():
         print "Starting SSL strip attack"
 
     # prn = function to apply to each sniffed packet
-    sniff(filter="tcp and port 80",prn=ssl_strip)
+    sniff(filter="tcp and port 80",count=10, prn=ssl_strip)
 	
 
 # =============== Text Interface ===============
