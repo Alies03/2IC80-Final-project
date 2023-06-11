@@ -71,7 +71,7 @@ def process_packet(packet):
                 del packet[IP].len
                 del packet[UDP].chksum
                 del packet[UDP].len
-                sendp(packet, verbose=False)
+                sendp(packet, iface = "enp0s3", verbose=True)
 
             # Display complete DNS packet information
             
