@@ -149,8 +149,9 @@ def attack(type):
                 done = True
                 break
             else:
-            time.sleep(20)
                 print("Input error!")
+            # time.sleep takes in seconds, not miliseconds
+            time.sleep(0.5) # wait half a second
             print ("Starting attack again")
 
     except KeyboardInterrupt:
