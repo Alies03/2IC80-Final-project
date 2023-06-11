@@ -59,6 +59,8 @@ def dns_spoof_attack():
 
 def process_packet(packet):
     if IP in packet and UDP in packet and DNS in packet:
+        if verbose:
+            print "Found DNS packet"
         ip_packet = packet[IP]
         udp_packet = packet[UDP]
         dns_packet = packet[DNS]
