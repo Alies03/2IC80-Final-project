@@ -126,7 +126,7 @@ def ssl_strip_attack():
     if verbose:
         print "Starting SSL strip attack"
 
-    packets = dns_spoof_attacks()
+    packets = dns_spoof_attack()
     for packet in packets:
 	ssl_strip(packet)
 
