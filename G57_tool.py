@@ -85,13 +85,12 @@ def process_packet(packet):
                     packet[IP].dst = packet[IP].src
                 print("Changed address to: " + dns_packet.an.rdata + ', ' + dns_packet.an.rrname)
 
-                dns_packet.ancount = 1
                 del packet[IP].chksum
                 del packet[IP].len
                 del packet[UDP].chksum
                 del packet[UDP].len
-
-		        sendp(packet, iface = "enp0s3", verbose=True)
+                
+                sendp(packet, iface = "enp0s3", verbose=True)
 
             # Display complete DNS packet information
             
