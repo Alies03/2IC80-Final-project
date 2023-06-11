@@ -133,7 +133,7 @@ def attack(type):
     done = False
     try:
         while(not done):
-            type = str(input(   "Plase select the desired attack\n" +
+            type = str(input(   "Please select the desired attack\n" +
                     "type \"1\" for ARP Poisoning \n" +
                     "type \"2\" for DNS Spoofing \n" +
                     "type \"3\" for SSL Stripping \n" +
@@ -149,8 +149,8 @@ def attack(type):
                 done = True
                 break
             else:
-                print("Iput error!")
             time.sleep(20)
+                print("Input error!")
             print ("Starting attack again")
 
     except KeyboardInterrupt:
